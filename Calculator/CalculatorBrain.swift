@@ -33,8 +33,8 @@ class CalculatorBrain{
         "+": Operation.BinaryOperation({$0 + $1}),
         "-": Operation.BinaryOperation({$0 - $1}),
         "/": Operation.BinaryOperation({$0 / $1}),
-        "SQ": Operation.UnaryOperation({$0 * $0}),
-        "CU": Operation.UnaryOperation({$0 * $0 * $0}),
+        "x²": Operation.UnaryOperation({$0 * $0}),
+        "x³": Operation.UnaryOperation({$0 * $0 * $0}),
         "=": Operation.Equals
     ]
     

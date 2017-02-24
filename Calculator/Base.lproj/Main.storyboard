@@ -40,7 +40,7 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="60.5" height="96.5"/>
                                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="35"/>
-                                                <state key="normal" title="SQ"/>
+                                                <state key="normal" title="x²"/>
                                                 <connections>
                                                     <action selector="performOperation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="N9x-Ry-Cct"/>
                                                 </connections>
@@ -118,7 +118,7 @@
                                                 <rect key="frame" x="212" y="0.0" width="60.5" height="96"/>
                                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="35"/>
-                                                <state key="normal" title="CU"/>
+                                                <state key="normal" title="x³"/>
                                                 <connections>
                                                     <action selector="performOperation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2Ek-xi-JAI"/>
                                                 </connections>
