@@ -16,9 +16,13 @@ enum Optional<T>{
 class CalculatorBrain{
     
     private var accumulator = 0.0
+    private var cleared = false
+    private var internalProgram = [Any]()
     
     func setOperand(operand:Double){
         accumulator = operand
+        internalProgram.append(operand as AnyObject)
+        cleared = false
     }
     
     private var operations: Dictionary<String, Operation> = [
@@ -27,15 +31,16 @@ class CalculatorBrain{
         "±": Operation.UnaryOperation({ -$0 }),
         "√": Operation.UnaryOperation(sqrt), // sqrt
         "cos": Operation.UnaryOperation(cos), //cosine
-        "sin": Operation.UnaryOperation(sin),
-        "tan": Operation.UnaryOperation(tan),
+        "sin": Operation.UnaryOperation(sin), //sine
+        "tan": Operation.UnaryOperation(tan), //tan
         "×": Operation.BinaryOperation({$0 * $1}),
         "+": Operation.BinaryOperation({$0 + $1}),
         "-": Operation.BinaryOperation({$0 - $1}),
         "/": Operation.BinaryOperation({$0 / $1}),
         "x²": Operation.UnaryOperation({$0 * $0}),
         "x³": Operation.UnaryOperation({$0 * $0 * $0}),
-        "=": Operation.Equals
+        "=": Operation.Equals,
+        "AC": Operation.AllClear
     ]
     
     private enum Operation{
@@ -43,9 +48,30 @@ class CalculatorBrain{
         case UnaryOperation((Double) -> Double)
         case BinaryOperation((Double, Double) -> Double)
         case Equals
+        case AllClear
+    }
+    
+    private var memory = 0.0
+    
+    func performMemory(symbol: String?){
+        if let memOperation = symbol{
+            switch memOperation {
+            case "MR":
+                accumulator = memory
+            case "MS":
+                memory = accumulator
+            case "MC":
+                memory = 0.0
+            case "M+":
+                memory = accumulator + memory
+            default:
+                break
+            }
+        }
     }
     
     func performOperation(symbol: String){
+        internalProgram.append(symbol as AnyObject)
         if let operation = operations[symbol] {
             switch operation {
             case .Constant(let value): accumulator = value
@@ -55,7 +81,22 @@ class CalculatorBrain{
                 pending = PendingBinaryOperationInfo(binaryFunction:function, firstOperand: accumulator)
             case .Equals:
                 executePendingBinaryOperation()
+            case .AllClear:
+                clearCalc()
             }
+        }
+    }
+    
+    private func clearCalc(){
+        if cleared{ //all cleared
+            pending = nil
+            accumulator = 0.0
+            pending?.firstOperand = 0.0
+            cleared = false
+        }
+        else{ //clear
+            accumulator = 0.0
+            cleared = true
         }
     }
     
@@ -70,6 +111,12 @@ class CalculatorBrain{
     private struct PendingBinaryOperationInfo{
         var binaryFunction:(Double, Double) -> Double
         var firstOperand: Double
+    }
+    
+    func clear(){
+        accumulator = 0.0
+        pending = nil
+        internalProgram.removeAll()
     }
     
     var result: Double{
